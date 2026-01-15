@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import authRoutes from './auth.routes';
 import playerRoutes from './player.routes';
+import teamRoutes from './team.routes';
 
 const router = Router();
 
@@ -32,6 +33,9 @@ router.use('/auth', authRoutes);
 
 // Player routes
 router.use('/players', playerRoutes);
+
+// Team routes
+router.use('/teams', teamRoutes);
 
 export default router;
 

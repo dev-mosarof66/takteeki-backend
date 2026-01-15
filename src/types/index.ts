@@ -20,3 +20,6 @@ export * from './auth';
 // Re-export player types
 export * from './player';
 
+// Re-export team types
+export * from './team';
+

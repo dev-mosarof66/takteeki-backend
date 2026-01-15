@@ -204,26 +204,39 @@ export class CreateTeamPlayerTaskTables1700000000000 implements MigrationInterfa
       true
     );
 
-    // Create foreign key for players.teamId -> teams.id
-    await queryRunner.createForeignKey(
-      'players',
-      new TableForeignKey({
-        columnNames: ['teamId'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'teams',
-        onDelete: 'RESTRICT',
-        onUpdate: 'CASCADE',
-      })
+    // Create foreign key for players.teamId -> teams.id (only if it doesn't exist)
+    const playersTable = await queryRunner.getTable('players');
+    const hasTeamIdFK = playersTable?.foreignKeys.some(
+      (fk) => fk.columnNames.indexOf('teamId') !== -1 && fk.referencedTableName === 'teams'
     );
+    
+    if (!hasTeamIdFK) {
+      await queryRunner.createForeignKey(
+        'players',
+        new TableForeignKey({
+          columnNames: ['teamId'],
+          referencedColumnNames: ['id'],
+          referencedTableName: 'teams',
+          onDelete: 'RESTRICT',
+          onUpdate: 'CASCADE',
+        })
+      );
+    }
 
-    // Create index on players.teamId
-    await queryRunner.createIndex(
-      'players',
-      new TableIndex({
-        name: 'IDX_players_teamId',
-        columnNames: ['teamId'],
-      })
+    // Create index on players.teamId (only if it doesn't exist)
+    const hasTeamIdIndex = playersTable?.indices.some(
+      (idx) => idx.name === 'IDX_players_teamId'
     );
+    
+    if (!hasTeamIdIndex) {
+      await queryRunner.createIndex(
+        'players',
+        new TableIndex({
+          name: 'IDX_players_teamId',
+          columnNames: ['teamId'],
+        })
+      );
+    }
 
     // Create index on players.email
     await queryRunner.createIndex(
@@ -307,26 +320,39 @@ export class CreateTeamPlayerTaskTables1700000000000 implements MigrationInterfa
       true
     );
 
-    // Create foreign key for tasks.playerId -> players.id
-    await queryRunner.createForeignKey(
-      'tasks',
-      new TableForeignKey({
-        columnNames: ['playerId'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'players',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      })
+    // Create foreign key for tasks.playerId -> players.id (only if it doesn't exist)
+    const tasksTable = await queryRunner.getTable('tasks');
+    const hasPlayerIdFK = tasksTable?.foreignKeys.some(
+      (fk) => fk.columnNames.indexOf('playerId') !== -1 && fk.referencedTableName === 'players'
     );
+    
+    if (!hasPlayerIdFK) {
+      await queryRunner.createForeignKey(
+        'tasks',
+        new TableForeignKey({
+          columnNames: ['playerId'],
+          referencedColumnNames: ['id'],
+          referencedTableName: 'players',
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE',
+        })
+      );
+    }
 
-    // Create index on tasks.playerId
-    await queryRunner.createIndex(
-      'tasks',
-      new TableIndex({
-        name: 'IDX_tasks_playerId',
-        columnNames: ['playerId'],
-      })
+    // Create index on tasks.playerId (only if it doesn't exist)
+    const hasPlayerIdIndex = tasksTable?.indices.some(
+      (idx) => idx.name === 'IDX_tasks_playerId'
     );
+    
+    if (!hasPlayerIdIndex) {
+      await queryRunner.createIndex(
+        'tasks',
+        new TableIndex({
+          name: 'IDX_tasks_playerId',
+          columnNames: ['playerId'],
+        })
+      );
+    }
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

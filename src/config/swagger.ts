@@ -213,24 +213,47 @@ const options: swaggerJsdoc.Options = {
             },
             name: {
               type: 'string',
+              maxLength: 100,
             },
-            shortName: {
+            category: {
               type: 'string',
+              maxLength: 50,
+              example: 'U16',
             },
-            logoUrl: {
-              type: 'string',
+            winRate: {
+              type: 'number',
+              minimum: 0,
+              maximum: 100,
+              example: 67.5,
             },
-            description: {
-              type: 'string',
+            matchHistory: {
+              type: 'array',
+              items: {
+                type: 'string',
+                enum: ['W', 'L', 'D'],
+              },
+              example: ['W', 'L', 'D', 'W', 'W'],
             },
-            location: {
+            headCoachId: {
               type: 'string',
+              format: 'uuid',
             },
-            coach: {
-              type: 'string',
+            headCoach: {
+              $ref: '#/components/schemas/User',
+            },
+            subCoachCount: {
+              type: 'integer',
+              minimum: 0,
+              example: 2,
             },
             isActive: {
               type: 'boolean',
+            },
+            players: {
+              type: 'array',
+              items: {
+                $ref: '#/components/schemas/Player',
+              },
             },
             createdAt: {
               type: 'string',
@@ -239,6 +262,130 @@ const options: swaggerJsdoc.Options = {
             updatedAt: {
               type: 'string',
               format: 'date-time',
+            },
+          },
+        },
+        CreateTeamRequest: {
+          type: 'object',
+          required: ['name', 'category', 'headCoachId'],
+          properties: {
+            name: {
+              type: 'string',
+              maxLength: 100,
+              example: 'Eagles',
+            },
+            category: {
+              type: 'string',
+              maxLength: 50,
+              example: 'U16',
+            },
+            headCoachId: {
+              type: 'string',
+              format: 'uuid',
+            },
+            winRate: {
+              type: 'number',
+              minimum: 0,
+              maximum: 100,
+              default: 0,
+              example: 67.5,
+            },
+            matchHistory: {
+              type: 'array',
+              items: {
+                type: 'string',
+                enum: ['W', 'L', 'D'],
+              },
+              example: ['W', 'L', 'D', 'W', 'W'],
+            },
+            subCoachCount: {
+              type: 'integer',
+              minimum: 0,
+              default: 0,
+            },
+            isActive: {
+              type: 'boolean',
+              default: true,
+            },
+          },
+        },
+        UpdateTeamRequest: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              maxLength: 100,
+            },
+            category: {
+              type: 'string',
+              maxLength: 50,
+            },
+            headCoachId: {
+              type: 'string',
+              format: 'uuid',
+            },
+            winRate: {
+              type: 'number',
+              minimum: 0,
+              maximum: 100,
+            },
+            matchHistory: {
+              type: 'array',
+              items: {
+                type: 'string',
+                enum: ['W', 'L', 'D'],
+              },
+            },
+            subCoachCount: {
+              type: 'integer',
+              minimum: 0,
+            },
+            isActive: {
+              type: 'boolean',
+            },
+          },
+        },
+        TeamResponse: {
+          type: 'object',
+          properties: {
+            status: {
+              type: 'string',
+              example: 'success',
+            },
+            data: {
+              $ref: '#/components/schemas/Team',
+            },
+          },
+        },
+        TeamListResponse: {
+          type: 'object',
+          properties: {
+            status: {
+              type: 'string',
+              example: 'success',
+            },
+            data: {
+              type: 'array',
+              items: {
+                $ref: '#/components/schemas/Team',
+              },
+            },
+            pagination: {
+              type: 'object',
+              properties: {
+                page: {
+                  type: 'integer',
+                },
+                limit: {
+                  type: 'integer',
+                },
+                total: {
+                  type: 'integer',
+                },
+                totalPages: {
+                  type: 'integer',
+                },
+              },
             },
           },
         },
