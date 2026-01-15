@@ -1,0 +1,16 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "postgres",
+  "database": "football_db",
+  "synchronize": false,
+  "logging": true,
+  "entities": ["src/entities/**/*.entity{.ts,.js}"],
+  "migrations": ["migrations/**/*{.ts,.js}"],
+  "subscribers": ["src/subscribers/**/*{.ts,.js}"]
+}
+
+
+
