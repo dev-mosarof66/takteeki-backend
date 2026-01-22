@@ -21,5 +21,6 @@ export const config = {
     refreshSecret: process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key-change-in-production',
     refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '30d', // Long-lived refresh token
   },
+  databaseUrl: process.env.DATABASE_URL || '',
 };
 

@@ -3,17 +3,17 @@ import { config } from './env';
 
 const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
-  host: config.db.host,
-  port: config.db.port,
-  username: config.db.user,
-  password: config.db.password,
-  database: config.db.name,
+  url: config.databaseUrl,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   synchronize: config.nodeEnv === 'development', // Auto-sync in dev only
   logging: config.nodeEnv === 'development',
   entities: [__dirname + '/../entities/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/../../migrations/**/*{.ts,.js}'],
   subscribers: [__dirname + '/../subscribers/**/*{.ts,.js}'],
 };
+
 
 export const AppDataSource = new DataSource(dataSourceOptions);
 
