@@ -463,6 +463,8 @@ router.put(
   validateRequest,
   asyncHandler(async (req: Request, res: Response) => {
     const updateData = { ...req.body };
+
+    console.log('update data ' , updateData);
     
     // If file is uploaded, set profilePictureUrl
     if (req.file) {
